@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BoaedgameData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,8 +11,11 @@ namespace BoardgameTracker
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment _appHost;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment appHost)
         {
+            _appHost = appHost;
             Configuration = configuration;
         }
 
@@ -33,6 +33,9 @@ namespace BoardgameTracker
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddEntityFrameworkSqlite()
+                .AddDbContext<BoardgameContext>(
+                    options => { options.UseSqlite($"Data Source={_appHost.ContentRootPath}/Boardgame.db"); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +60,7 @@ namespace BoardgameTracker
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Collection}/{action=Index}/{id?}");
             });
         }
     }
