@@ -2,7 +2,7 @@
 using BoardgameData.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BoaedgameData
+namespace BoardgameData
 {
     public class BoardgameContext : DbContext
     {

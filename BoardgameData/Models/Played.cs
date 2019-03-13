@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BoardgameData.Models
 {
@@ -9,7 +8,8 @@ namespace BoardgameData.Models
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
+        Boardgame Boardgame { get; set; }
         public IEnumerable<Image> Images { get; set; }
-        public IEnumerable<Player> Players { get; set; }
+        public IEnumerable<PlayerPlayed> Players { get; set; }
     }
 }

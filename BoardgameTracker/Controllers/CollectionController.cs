@@ -1,16 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BoardgameData;
+using BoardgameTracker.Models.Colection;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BoardgameTracker.Controllers
 {
     public class CollectionController : Controller
     {
+        private readonly IBoardgame _assets;
+
+        public CollectionController(IBoardgame assets)
+        {
+            _assets = assets;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var model = new AssetIndexListingModel
+            {
+                Boardgames = _assets.GetAll()
+
+            };
+
+            return View(model);
         }
     }
 }

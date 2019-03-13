@@ -1,0 +1,35 @@
+﻿@model BoardgameTracker.Models.Colection.AssetIndexListingModel
+
+    <div class="row"><h3>Boardgame Collection</h3></div>
+
+    <div class="row" id="assets">
+        <div id="assets">
+            <div id="assetsTable">
+                <table class="table table-condensed" id="catalogIndexTable">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var asset in Model.Boardgames)
+                        {
+                            <tr class="assetRow">
+                                <td class="">
+                                    <a asp-controller="Catalog" asp-action="Detail" asp-route-id="@asset.Id">
+                                        <img src="@asset.Image" class="imageCell" />
+                                    </a>
+                                </td>
+                                <td class="">@asset.Name</td>
+                                <td class="">@asset.Description</td>
+                                <td class="">@asset.Rating</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

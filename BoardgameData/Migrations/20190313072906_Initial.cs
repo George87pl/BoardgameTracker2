@@ -3,10 +3,41 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BoardgameData.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Boardgames",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    Rating = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Boardgames", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Players",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Players", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Plays",
                 columns: table => new
@@ -42,44 +73,25 @@ namespace BoardgameData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Players",
+                name: "PlayerPlayed",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
+                    PlayerId = table.Column<int>(nullable: true),
                     PlayedId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Players", x => x.Id);
+                    table.PrimaryKey("PK_PlayerPlayed", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Players_Plays_PlayedId",
+                        name: "FK_PlayerPlayed_Plays_PlayedId",
                         column: x => x.PlayedId,
                         principalTable: "Plays",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Boardgames",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
-                    Rating = table.Column<int>(nullable: false),
-                    PlayerId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Boardgames", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Boardgames_Players_PlayerId",
+                        name: "FK_PlayerPlayed_Players_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Players",
                         principalColumn: "Id",
@@ -87,19 +99,19 @@ namespace BoardgameData.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Boardgames_PlayerId",
-                table: "Boardgames",
-                column: "PlayerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Images_PlayedId",
                 table: "Images",
                 column: "PlayedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_PlayedId",
-                table: "Players",
+                name: "IX_PlayerPlayed_PlayedId",
+                table: "PlayerPlayed",
                 column: "PlayedId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayerPlayed_PlayerId",
+                table: "PlayerPlayed",
+                column: "PlayerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -111,10 +123,13 @@ namespace BoardgameData.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
-                name: "Players");
+                name: "PlayerPlayed");
 
             migrationBuilder.DropTable(
                 name: "Plays");
+
+            migrationBuilder.DropTable(
+                name: "Players");
         }
     }
 }

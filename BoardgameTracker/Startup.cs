@@ -1,4 +1,5 @@
-﻿using BoaedgameData;
+﻿using BoardgameServices;
+using BoardgameData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,7 @@ namespace BoardgameTracker
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddScoped<IBoardgame, BGServices>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddEntityFrameworkSqlite()
