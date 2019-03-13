@@ -8,25 +8,29 @@ navbar-brand {
 }
 
 /* Moje style */
-#assets {
-    margin: 0 auto;
+.gallery-image {
+    max-height: 180px;
+    max-width: 180px;
+    align-content: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-#assetsTable td {
-    text-align: center;
-    border-bottom: 1px solid #ddd;
+.gallery-image-container {
+    padding: 8px;
+    background: #fff;
+    border-radius: 2px;
+    display: inline-block;
+    max-height: 200px;
+    max-width: 200px;
+    margin: 12px;
+    position: relative;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2), 0 5px 5px rgba(0, 0, 0, 0.2);
 }
 
-#catalogIndexTable {
-    font-size: 1.3em;
-}
-
-#catalogIndexTable td {
-    vertical-align: middle;
-}
-
-#catalogIndexTable tr:hover {
-    background-color: #eee;
+.button-add {
+    margin: 0, auto;
 }
 
 /* Sticky footer styles
