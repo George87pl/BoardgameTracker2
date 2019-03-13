@@ -24,6 +24,11 @@ navbar-brand {
     margin-bottom: 10px;
 }
 
+#upload-form {
+    padding: 60px;
+    margin: auto;
+}
+
 .gallery-image-container {
     padding: 8px;
     background: #fff;

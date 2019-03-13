@@ -23,5 +23,11 @@ namespace BoardgameServices
         {
             return GetAll().FirstOrDefault(b => b.Id == id);
         }
+
+        public void Add(Boardgame boardgame)
+        {
+            _dbContext.Add(boardgame);
+            _dbContext.SaveChanges();
+        }
     }
 }
