@@ -8,5 +8,7 @@ namespace BoardgameData
         IEnumerable<Boardgame> GetAll();
         Boardgame GetById(int id);
         void Add(Boardgame boardgame);
+        void Delete(Boardgame boardgame);
+        void Update(Boardgame boardgame);
     }
 }

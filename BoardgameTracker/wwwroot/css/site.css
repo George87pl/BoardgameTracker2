@@ -45,10 +45,18 @@ navbar-brand {
     margin: 0, auto;
 }
 
+#btn-pading {
+    margin-right: 10px;
+}
+
+.btn-back {
+    margin-top: 10px;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 @media (min-width: 768px) {
   html {

@@ -29,5 +29,17 @@ namespace BoardgameServices
             _dbContext.Add(boardgame);
             _dbContext.SaveChanges();
         }
+
+        public void Delete(Boardgame boardgame)
+        {
+            _dbContext.Remove(boardgame);
+            _dbContext.SaveChanges();
+        }
+
+        public void Update(Boardgame boardgame)
+        {
+            _dbContext.Update(boardgame);
+            _dbContext.SaveChanges();
+        }
     }
 }

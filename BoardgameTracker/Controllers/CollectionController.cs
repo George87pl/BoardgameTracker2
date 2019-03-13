@@ -47,7 +47,7 @@ namespace BoardgameTracker.Controllers
         }
 
         public IActionResult Create()
-        {       
+        {
             return View();
         }
 
@@ -81,6 +81,84 @@ namespace BoardgameTracker.Controllers
             }
 
             return View(createBoardgame);
+        }
+
+        public IActionResult Update(int id)
+        {
+            var boardgame = _assets.GetById(id);
+
+            var model = new CreateBoardgameModel()
+            {
+                Id = boardgame.Id,
+                Name = boardgame.Name,
+                Description = boardgame.Description,
+                Rating = boardgame.Rating,
+                Image = boardgame.Image          
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(CreateBoardgameModel boardgameModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var boardgame = new Boardgame
+                {
+                    Id = boardgameModel.Id,
+                    Name = boardgameModel.Name,
+                    Image = boardgameModel.Image,
+                    Description = boardgameModel.Description,
+                    Rating = boardgameModel.Rating
+                };
+
+                if (boardgameModel.imageUpload.FileName.Length > 0)
+                {
+                    var webRoot = _env.WebRootPath;
+                    var filePath = Path.Combine(webRoot.ToString() + boardgame.Image);
+
+                    if (boardgame.Image != null)
+                    {
+                        webRoot = _env.WebRootPath;
+                        System.IO.File.Delete(filePath);
+                    }
+
+                    filePath = Path.Combine(webRoot.ToString() + "\\images\\games\\" + boardgameModel.imageUpload.FileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        boardgameModel.imageUpload.CopyTo(stream);
+                    }
+                }
+
+                boardgame.Image = "\\images\\games\\" + boardgameModel.imageUpload.FileName;
+
+                _assets.Update(boardgame);
+
+                return RedirectToAction("Detail", new { id = boardgameModel.Id });
+            }
+
+            return View(boardgameModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id, string Image)
+        {
+            var boardgame = _assets.GetById(id);
+            _assets.Delete(boardgame);
+
+            //Usuwanie pliku
+            if (Image != null)
+            {
+                var webRoot = _env.WebRootPath;
+                var filePath = Path.Combine(webRoot.ToString() + Image);
+                System.IO.File.Delete(filePath);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -2,26 +2,33 @@
 
 <div class="col-md-8 offset-md-2">
     <div class="drop shadow">
-        <form asp-action="Create" method="post" enctype="multipart/form-data" id="upload-form">
+        <div class="row">
+            <div class="col-4 offset-4">
+                <br />
+                <img src="@Model.Image" class="gallery-image"/>
+            </div>
+        </div>
+        <form asp-action="Update" method="post" enctype="multipart/form-data" id="upload-form">
             <div class="form-group">
+                <input asp-for="Id" type="hidden" />
                 <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control"/>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Rating"></label>
-                <input asp-for="Rating" class="form-control" />
+                <input asp-for="Rating" class="form-control"/>
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div>
                 <label class="btn btn-secondary active">
-                    Browse for Image
-                    <input type="file" name="imageUpload" style="display: none" />
+                    Browse for new Image
+                    <input type="file" name="imageUpload" style="display: none"/>
                 </label>
                 <span asp-validation-for="imageUpload" class="text-danger"></span>
             </div>
@@ -31,6 +38,11 @@
                 </button>
             </div>
         </form>
+    </div>
+    <div>
+        <a asp-action="Detail" asp-route-id="@Model.Id" class="btn btn-primary btn-back">
+            Back
+        </a>
     </div>
 </div>
 
