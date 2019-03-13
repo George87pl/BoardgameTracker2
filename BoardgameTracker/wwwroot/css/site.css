@@ -17,6 +17,13 @@ navbar-brand {
     background-position: center;
 }
 
+.img-bgdetail {
+    max-height: 500px;
+    max-width: 500px;
+    margin-right: 30px;
+    margin-bottom: 10px;
+}
+
 .gallery-image-container {
     padding: 8px;
     background: #fff;

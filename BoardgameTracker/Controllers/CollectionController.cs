@@ -23,5 +23,21 @@ namespace BoardgameTracker.Controllers
 
             return View(model);
         }
+
+        public IActionResult Detail(int id)
+        {
+            var boardgame = _assets.GetById(id);
+
+            var model = new AssetDetailModel()
+            {
+                Id = boardgame.Id,
+                Name = boardgame.Name,
+                Description = boardgame.Description,
+                Image = boardgame.Image,
+                Rating = boardgame.Rating
+            };
+
+            return View(model);
+        }
     }
 }
