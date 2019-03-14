@@ -1,0 +1,14 @@
+﻿@model BoardgameTracker.Models.Colection.AssetPlayerIndex
+
+<div class="row">
+    <div class="col-12">
+        <a asp-controller="Player" asp-action="Create" class="btn btn-primary float-right">Add New Player</a>
+    </div>
+</div>
+
+@foreach (var player in Model.Players)
+{
+    <div class="gallery-image-container">
+        <a asp-controller="Player" asp-action="Detail" asp-route-id="@player.Id"><img src="@player.Image" class="gallery-image-title" /></a>
+    </div>
+}

@@ -93,7 +93,7 @@ namespace BoardgameTracker.Controllers
                 Name = boardgame.Name,
                 Description = boardgame.Description,
                 Rating = boardgame.Rating,
-                Image = boardgame.Image          
+                Image = boardgame.Image
             };
 
             return View(model);
@@ -101,7 +101,7 @@ namespace BoardgameTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(CreateBoardgameModel boardgameModel)
+        public IActionResult Update(UpdateBoardgameModel boardgameModel)
         {
             if (ModelState.IsValid)
             {
@@ -114,26 +114,29 @@ namespace BoardgameTracker.Controllers
                     Rating = boardgameModel.Rating
                 };
 
-                if (boardgameModel.imageUpload.FileName.Length > 0)
+                if (boardgameModel.imageUpload != null)
                 {
-                    var webRoot = _env.WebRootPath;
-                    var filePath = Path.Combine(webRoot.ToString() + boardgame.Image);
-
-                    if (boardgame.Image != null)
+                    if (boardgameModel.imageUpload.FileName.Length > 0)
                     {
-                        webRoot = _env.WebRootPath;
-                        System.IO.File.Delete(filePath);
-                    }
+                        var webRoot = _env.WebRootPath;
+                        var filePath = Path.Combine(webRoot.ToString() + boardgame.Image);
 
-                    filePath = Path.Combine(webRoot.ToString() + "\\images\\games\\" + boardgameModel.imageUpload.FileName);
+                        if (boardgame.Image != null)
+                        {
+                            webRoot = _env.WebRootPath;
+                            System.IO.File.Delete(filePath);
+                        }
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        boardgameModel.imageUpload.CopyTo(stream);
+                        filePath = Path.Combine(webRoot.ToString() + "\\images\\games\\" +
+                                                boardgameModel.imageUpload.FileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            boardgameModel.imageUpload.CopyTo(stream);
+                        }
+                        boardgame.Image = "\\images\\games\\" + boardgameModel.imageUpload.FileName;
                     }
                 }
-
-                boardgame.Image = "\\images\\games\\" + boardgameModel.imageUpload.FileName;
 
                 _assets.Update(boardgame);
 

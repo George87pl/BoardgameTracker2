@@ -17,6 +17,15 @@ navbar-brand {
     background-position: center;
 }
 
+.gallery-image-title {
+    max-height: 160px;
+    max-width: 180px;
+    align-content: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .img-bgdetail {
     max-height: 500px;
     max-width: 500px;

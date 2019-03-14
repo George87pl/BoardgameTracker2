@@ -1,0 +1,116 @@
+﻿@model BoardgameTracker.Models.Player.AssetPlayerDetail
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-5">
+            <div>
+                <img class="img-fluid" src="@Model.Image" />
+            </div>
+        </div>
+
+        <div class="col-7">
+            <h1>@Model.Name</h1>
+            <p id="itemAuthor">@Model.Description</p>
+        </div>
+    </div>  
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <a asp-controller="Player" asp-action="Index" class="btn btn-primary float-left">Back</a>
+        <a asp-controller="Player" asp-action="Delete" class="btn btn-danger float-right" data-toggle="modal" data-target="#exampleModal">Delete</a>
+        <a asp-controller="Player" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-info float-right" id="btn-pading">Edit</a>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure to delete @Model.Name
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <form asp-action="Delete" method="post" enctype="multipart/form-data" id="delete-form">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="Image" />
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+@*<div class="row">
+        <div class="col-lg-6">
+            <h4>Checkout History</h4>
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Date Loaned</th>
+                        <th>Date Returned</th>
+                        <th>Card Id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var checkout in @Model.CheckoutHistory)
+                    {
+                        <tr>
+                            <td>
+                                @checkout.CheckOut
+                            </td>
+                            <td>
+                                @checkout.CheckIn
+                            </td>
+                            <td>
+                                @checkout.LibraryCard.Id
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <h4>Current Holds</h4>
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Hold Placed</th>
+                        <th>Patron</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var hold in @Model.CurrentHolds)
+                    {
+                        <tr>
+                            <td>
+                                @hold.HoldPlaced
+                            </td>
+                            <td>
+                                @hold.PatronName
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>*@
+

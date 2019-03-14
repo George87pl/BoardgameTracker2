@@ -33,6 +33,7 @@ namespace BoardgameTracker
             });
 
             services.AddScoped<IBoardgame, BGServices>();
+            services.AddScoped<IPlayer, PlayerServices>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddEntityFrameworkSqlite()
