@@ -1,0 +1,32 @@
+﻿@model BoardgameTracker.Models.Played.AssetPlayedIndex
+
+<div>
+    <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp customTable" id="patronIndexTable">
+        <thead>
+            <tr>
+                <th>Link</th>
+                <th>Boardgame name</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Players</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Played)
+        {
+            <tr>
+                <td><a asp-controller="Played" asp-action="Detail" asp-route-id="@item.Id">(Detail)</a></td>
+                <td>@item.Boardgame.Name</td>
+                <td>@item.Date</td>
+                <td>@item.Description</td>
+                <td>
+                    @foreach (var players in item.Players)
+                    {
+                    <p>@players.Player.Name</p>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

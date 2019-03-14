@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BoardgameData.Migrations
 {
-    public partial class Initial : Migration
+    public partial class hop : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,11 +45,18 @@ namespace BoardgameData.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Date = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    BoardgameId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Plays", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Plays_Boardgames_BoardgameId",
+                        column: x => x.BoardgameId,
+                        principalTable: "Boardgames",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,13 +119,15 @@ namespace BoardgameData.Migrations
                 name: "IX_PlayerPlayed_PlayerId",
                 table: "PlayerPlayed",
                 column: "PlayerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Plays_BoardgameId",
+                table: "Plays",
+                column: "BoardgameId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Boardgames");
-
             migrationBuilder.DropTable(
                 name: "Images");
 
@@ -130,6 +139,9 @@ namespace BoardgameData.Migrations
 
             migrationBuilder.DropTable(
                 name: "Players");
+
+            migrationBuilder.DropTable(
+                name: "Boardgames");
         }
     }
 }

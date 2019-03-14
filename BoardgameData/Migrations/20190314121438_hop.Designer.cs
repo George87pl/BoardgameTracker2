@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardgameData.Migrations
 {
     [DbContext(typeof(BoardgameContext))]
-    [Migration("20190313072906_Initial")]
-    partial class Initial
+    [Migration("20190314121438_hop")]
+    partial class hop
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,11 +57,15 @@ namespace BoardgameData.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("BoardgameId");
+
                     b.Property<DateTime>("Date");
 
                     b.Property<string>("Description");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BoardgameId");
 
                     b.ToTable("Plays");
                 });
@@ -105,6 +109,13 @@ namespace BoardgameData.Migrations
                     b.HasOne("BoardgameData.Models.Played")
                         .WithMany("Images")
                         .HasForeignKey("PlayedId");
+                });
+
+            modelBuilder.Entity("BoardgameData.Models.Played", b =>
+                {
+                    b.HasOne("BoardgameData.Models.Boardgame", "Boardgame")
+                        .WithMany()
+                        .HasForeignKey("BoardgameId");
                 });
 
             modelBuilder.Entity("BoardgameData.Models.PlayerPlayed", b =>

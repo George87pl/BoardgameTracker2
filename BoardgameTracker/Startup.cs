@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using BoardgameData.Models;
 
 namespace BoardgameTracker
 {
@@ -34,6 +35,7 @@ namespace BoardgameTracker
 
             services.AddScoped<IBoardgame, BGServices>();
             services.AddScoped<IPlayer, PlayerServices>();
+            services.AddScoped<IPlayed, PlayedServices>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddEntityFrameworkSqlite()

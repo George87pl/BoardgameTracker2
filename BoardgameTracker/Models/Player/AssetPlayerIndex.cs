@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BoardgameTracker.Models.Colection
+namespace BoardgameTracker.Models.Player
 {
     public class AssetPlayerIndex
     {
