@@ -26,7 +26,12 @@ namespace BoardgameServices
 
         public Played GetById(int id)
         {
-            return GetAll().FirstOrDefault(b => b.Id == id);
+            return _dbContext.Plays
+                .Include(b => b.Boardgame)
+                .Include(i => i.Images)
+                .Include(pp => pp.Players)
+                .ThenInclude(p => p.Player)
+                .FirstOrDefault(b => b.Id == id);
         }
 
         public void Add(Played played)

@@ -51,7 +51,7 @@ navbar-brand {
 }
 
 .button-add {
-    margin: 0, auto;
+    margin-bottom: 10px;
 }
 
 #btn-pading {
@@ -60,6 +60,15 @@ navbar-brand {
 
 .btn-back {
     margin-top: 10px;
+}
+
+.table-player {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.player-played-image {
+    max-width: 70px;
 }
 
 /* Sticky footer styles

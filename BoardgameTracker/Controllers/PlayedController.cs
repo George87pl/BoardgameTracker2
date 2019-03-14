@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using BoardgameData;
 using BoardgameData.Models;
@@ -6,6 +7,7 @@ using BoardgameTracker.Models.Colection;
 using BoardgameTracker.Models.Played;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace BoardgameTracker.Controllers
 {
@@ -30,26 +32,27 @@ namespace BoardgameTracker.Controllers
             return View(model);
         }
 
-        //public IActionResult Detail(int id)
-        //{
-        //    var boardgame = _assets.GetById(id);
+        public IActionResult Detail(int id)
+        {
+            var played = _assets.GetById(id);
 
-        //    var model = new AssetDetailModel()
-        //    {
-        //        Id = boardgame.Id,
-        //        Name = boardgame.Name,
-        //        Description = boardgame.Description,
-        //        Image = boardgame.Image,
-        //        Rating = boardgame.Rating
-        //    };
+            var model = new AssetPlayedDetail()
+            {
+                Id = played.Id,
+                Date = played.Date,
+                Description = played.Description,
+                Boardgame = played.Boardgame,
+                Images = played.Images,
+                Players = played.Players
+            };
 
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
