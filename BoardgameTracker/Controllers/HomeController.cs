@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BoardgameTracker.Models;
 using Microsoft.AspNetCore.Mvc;
-using BoardgameTracker.Models;
+using System.Diagnostics;
 
 namespace BoardgameTracker.Controllers
 {
     public class HomeController : Controller
     {
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
         {
             return View();
         }

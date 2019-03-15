@@ -8,6 +8,33 @@ navbar-brand {
 }
 
 /* Moje style */
+
+#collection {
+    background: url('/images/games/bgames.jpg') bottom right 15% no-repeat #555;
+}
+
+#players {
+    background: url('/images/games/players.jpeg') bottom right 15% no-repeat #555;
+}
+
+#plays {
+    background: url('/images/games/play.jpg') bottom right 15% no-repeat #555;
+}
+
+.homeLabel {
+    background-color: rgba(0,0,0,0.3);
+    padding: 4px;
+}
+
+.demo-card-square.mdl-card {
+    width: 320px;
+    height: 350px;
+}
+
+.demo-card-square > .mdl-card__title {
+    color: #fff;
+}
+
 .gallery-image {
     max-height: 180px;
     max-width: 180px;
