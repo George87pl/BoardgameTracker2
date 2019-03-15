@@ -1,0 +1,31 @@
+﻿@model BoardgameTracker.Models.Played.CreatePlayedAllModel
+
+<div class="col-md-8 offset-md-2">
+    <div class="drop shadow">     
+        <form asp-action="Create" method="post" enctype="multipart/form-data" id="upload-form">
+            <div class="form-group">
+                <label class="text">Select Boardgame</label>
+                <select class="form-control" asp-for="@Model.PlayedModel.Boardgame" asp-items="@(new SelectList(Model.Boardgames, "Id", "Name"))"></select>
+            </div>
+            <div class="form-group">
+                <label class="text">Select Players</label>
+                <select multiple class="form-control" asp-for="@Model.PlayedModel.Players" asp-items="@(new SelectList(Model.Players, "Id", "Name"))"></select>
+            </div>
+            <div class="form-group">
+                <label class="text">Select Photos</label>
+                <input multiple="multiple" type="file" class="form-control-file" id="@Model.PlayedModel.Images">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-info">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <a asp-action="Index" class="btn btn-primary btn-back">
+            Back
+        </a>
+    </div>
+</div>
+

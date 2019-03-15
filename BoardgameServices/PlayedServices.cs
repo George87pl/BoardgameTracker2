@@ -15,6 +15,16 @@ namespace BoardgameServices
             _dbContext = dbContext;
         }
 
+        public IEnumerable<Boardgame> GetAllBoardgames()
+        {
+            return _dbContext.Boardgames;
+        }
+
+        public IEnumerable<Player> GetAllPlayers()
+        {
+            return _dbContext.Players;
+        }
+
         public IEnumerable<Played> GetAll()
         {
             return _dbContext.Plays

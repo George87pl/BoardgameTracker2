@@ -1,5 +1,11 @@
 ﻿@model BoardgameTracker.Models.Player.AssetPlayerIndex
 
+@{
+    ViewData["Title"] = "Players";
+}
+
+<h3>@ViewData["Title"]</h3>
+
 <div class="row">
     <div class="col-12">
         <a asp-controller="Player" asp-action="Create" class="btn btn-primary float-right">Add New Player</a>

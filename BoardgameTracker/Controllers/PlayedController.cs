@@ -1,13 +1,10 @@
-﻿using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using BoardgameData;
-using BoardgameData.Models;
-using BoardgameTracker.Models.Colection;
+﻿using BoardgameData.Models;
 using BoardgameTracker.Models.Played;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace BoardgameTracker.Controllers
 {
@@ -51,40 +48,61 @@ namespace BoardgameTracker.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var boardgames = _assets.GetAllBoardgames();
+            var players = _assets.GetAllPlayers();
+
+            var model = new CreatePlayedAllModel
+            {
+                Boardgames = boardgames,
+                Players = players,
+                PlayedModel = new CreatePlayedModel()
+            };
+
+            return View(model);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Create(CreateBoardgameModel createBoardgame)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var webRoot = _env.WebRootPath;
-        //        var filePath = Path.Combine(webRoot.ToString() + "\\images\\games\\" + createBoardgame.imageUpload.FileName);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CreatePlayedModel createPlayed)
+        {
+            if (ModelState.IsValid)
+            {
+                var webRoot = _env.WebRootPath;
+                string filePath;
+                List<Image> images = new List<Image>();
 
-        //        if (createBoardgame.imageUpload.FileName.Length > 0)
-        //        {
-        //            using (var stream = new FileStream(filePath, FileMode.Create))
-        //            {
-        //                createBoardgame.imageUpload.CopyTo(stream);
-        //            }
-        //        }
+                foreach (var file in createPlayed.Files)
+                {
+                    filePath = Path.Combine(webRoot.ToString() + "\\images\\games\\" + file.FileName);
 
-        //        var boardgame = new Boardgame
-        //        {
-        //            Name = createBoardgame.Name,
-        //            Description = createBoardgame.Description,
-        //            Rating = createBoardgame.Rating,
-        //            Image = "\\images\\games\\" + createBoardgame.imageUpload.FileName
-        //        };
+                    if (file.FileName.Length > 0)
+                    {
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
 
-        //        _assets.Add(boardgame);
-        //        return RedirectToAction("Index");
-        //    }
+                        images.Add(new Image
+                        {
+                            Url = filePath
+                        });
+                    }
+                }
 
-        //    return View(createBoardgame);
-        //}
+                var played = new Played
+                {
+                    Date = DateTime.Now,
+                    Description = createPlayed.Description,
+                    Boardgame = createPlayed.Boardgame,
+                    Images = images
+                };
+
+                _assets.Add(played);
+                return RedirectToAction("Index");
+            }
+
+            return View(createPlayed);
+        }
 
         //public IActionResult Update(int id)
         //{
