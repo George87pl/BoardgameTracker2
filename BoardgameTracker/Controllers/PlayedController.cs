@@ -5,17 +5,23 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using BoardgameData;
+using System.Linq;
 
 namespace BoardgameTracker.Controllers
 {
     public class PlayedController : Controller
     {
         private readonly IPlayed _assets;
+        private readonly IPlayer _assetPlayer;
+        private readonly IBoardgame _assetBoardgame;
         private readonly IHostingEnvironment _env;
 
-        public PlayedController(IPlayed assets, IHostingEnvironment env)
+        public PlayedController(IPlayed assets, IPlayer assetPlayer, IHostingEnvironment env, IBoardgame assetBoardgame)
         {
             _assets = assets;
+            _assetPlayer = assetPlayer;
+            _assetBoardgame = assetBoardgame;
             _env = env;
         }
 
@@ -51,11 +57,11 @@ namespace BoardgameTracker.Controllers
             var boardgames = _assets.GetAllBoardgames();
             var players = _assets.GetAllPlayers();
 
-            var model = new CreatePlayedAllModel
+            var model = new AssetCreateIndex()
             {
                 Boardgames = boardgames,
                 Players = players,
-                PlayedModel = new CreatePlayedModel()
+                Descryption = ""
             };
 
             return View(model);
@@ -63,17 +69,17 @@ namespace BoardgameTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreatePlayedModel createPlayed)
+        public IActionResult Create(AssetCreateIndex assetCreate)
         {
             if (ModelState.IsValid)
             {
                 var webRoot = _env.WebRootPath;
-                string filePath;
+                
                 List<Image> images = new List<Image>();
 
-                foreach (var file in createPlayed.Files)
+                foreach (var file in assetCreate.imageUpload)
                 {
-                    filePath = Path.Combine(webRoot.ToString() + "\\images\\games\\" + file.FileName);
+                    var filePath = Path.Combine(webRoot.ToString() + "\\images\\plays\\" + file.FileName);
 
                     if (file.FileName.Length > 0)
                     {
@@ -84,24 +90,36 @@ namespace BoardgameTracker.Controllers
 
                         images.Add(new Image
                         {
-                            Url = filePath
+                            Url = "\\images\\plays\\" + file.FileName
                         });
                     }
                 }
 
-                var played = new Played
+                List<PlayerPlayed> players = new List<PlayerPlayed>();
+
+                foreach (var playerId in assetCreate.PlayerIds)
+                {
+
+                    players.Add(new PlayerPlayed
+                    {
+                        Player = _assetPlayer.GetById(playerId)
+                    });
+                }
+
+                var played = new Played()
                 {
                     Date = DateTime.Now,
-                    Description = createPlayed.Description,
-                    Boardgame = createPlayed.Boardgame,
-                    Images = images
+                    Description = assetCreate.Descryption,
+                    Boardgame = _assetBoardgame.GetById(assetCreate.BoardgameId),
+                    Images = images,
+                    Players = players.AsEnumerable()
                 };
 
                 _assets.Add(played);
                 return RedirectToAction("Index");
             }
 
-            return View(createPlayed);
+            return View(assetCreate);
         }
 
         //public IActionResult Update(int id)
