@@ -50,6 +50,10 @@ navbar-brand {
     box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2), 0 5px 5px rgba(0, 0, 0, 0.2);
 }
 
+.gallery-content {
+    padding: 50px;
+}
+
 .button-add {
     margin-bottom: 10px;
 }

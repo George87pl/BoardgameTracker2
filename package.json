@@ -1,0 +1,24 @@
+{
+  "name": "BoardgameTracker",
+  "version": "1.0.0",
+  "description": "Bg tracker",
+  "main": "index.js",
+  "dependencies": {
+    "lightbox2": "^2.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/George87pl/BoardgameTracker2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/George87pl/BoardgameTracker2/issues"
+  },
+  "homepage": "https://github.com/George87pl/BoardgameTracker2#readme"
+}
