@@ -71,27 +71,33 @@ namespace BoardgameTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(AssetCreateIndex assetCreate)
         {
+            assetCreate.Boardgames = _assets.GetAllBoardgames();
+            assetCreate.Players = _assets.GetAllPlayers();
+
             if (ModelState.IsValid)
             {
                 var webRoot = _env.WebRootPath;
-                
+
                 List<Image> images = new List<Image>();
 
-                foreach (var file in assetCreate.imageUpload)
+                if (assetCreate.imageUpload != null)
                 {
-                    var filePath = Path.Combine(webRoot.ToString() + "\\images\\plays\\" + file.FileName);
-
-                    if (file.FileName.Length > 0)
+                    foreach (var file in assetCreate.imageUpload)
                     {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            file.CopyTo(stream);
-                        }
+                        var filePath = Path.Combine(webRoot.ToString() + "\\images\\plays\\" + file.FileName);
 
-                        images.Add(new Image
+                        if (file.FileName.Length > 0)
                         {
-                            Url = "\\images\\plays\\" + file.FileName
-                        });
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                file.CopyTo(stream);
+                            }
+
+                            images.Add(new Image
+                            {
+                                Url = "\\images\\plays\\" + file.FileName
+                            });
+                        }
                     }
                 }
 
