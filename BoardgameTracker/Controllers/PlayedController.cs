@@ -196,6 +196,9 @@ namespace BoardgameTracker.Controllers
         public IActionResult Delete(int id)
         {
             var played = _assets.GetById(id);
+
+            _assets.Delete(played.Images);
+            _assets.Delete(played.Players);
             _assets.Delete(played);
 
             return RedirectToAction(nameof(Index));

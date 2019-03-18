@@ -10,6 +10,8 @@ namespace BoardgameData.Models
         Played GetById(int id);
         void Add(Played boardgame);
         void Delete(Played boardgame);
+        void Delete(IEnumerable<Image> images);
+        void Delete(IEnumerable<PlayerPlayed> playerPlays);
         void Update(Played boardgame);
     }
 }
