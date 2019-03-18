@@ -24,6 +24,11 @@ namespace BoardgameServices
             return GetAll().FirstOrDefault(b => b.Id == id);
         }
 
+        public Played isPlayed(int id)
+        {
+            return _dbContext.Plays.FirstOrDefault(p => p.Boardgame.Id == id);
+        }
+
         public void Add(Boardgame boardgame)
         {
             _dbContext.Add(boardgame);

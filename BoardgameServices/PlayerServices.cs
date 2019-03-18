@@ -2,6 +2,7 @@
 using System.Linq;
 using BoardgameData;
 using BoardgameData.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardgameServices
 {
@@ -21,7 +22,11 @@ namespace BoardgameServices
 
         public Player GetById(int id)
         {
-            return GetAll().FirstOrDefault(b => b.Id == id);
+            return _dbContext.Players
+                .Include(p => p.Plays)
+                .ThenInclude(pl => pl.Played)
+                .ThenInclude(b => b.Boardgame)
+                .FirstOrDefault(b => b.Id == id);
         }
 
         public void Add(Player player)
@@ -40,6 +45,15 @@ namespace BoardgameServices
         {
             _dbContext.Update(player);
             _dbContext.SaveChanges();
+        }
+
+        public IEnumerable<Played> GetAllPlaysWhereIdPlayer(int id)
+        {
+            return _dbContext.Plays
+                .Include(b => b.Boardgame)
+                .Include(p => p.Players)
+                .ThenInclude(i => i.Player)
+                .Where(p => p.Players.Any(c => c.Player.Id == id));
         }
     }
 }

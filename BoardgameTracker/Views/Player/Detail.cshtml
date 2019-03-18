@@ -1,4 +1,5 @@
-﻿@model BoardgameTracker.Models.Player.AssetPlayerDetail
+﻿@using System.Threading
+@model BoardgameTracker.Models.Player.AssetPlayerDetail
 
 <div class="jumbotron">
     <div class="row">
@@ -12,7 +13,7 @@
             <h1>@Model.Name</h1>
             <p id="itemAuthor">@Model.Description</p>
         </div>
-    </div>  
+    </div>
 </div>
 
 <div class="row">
@@ -32,15 +33,27 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Are you sure to delete @Model.Name
+                        @if (Model.Played.Count() > 0)
+                        {
+                            <p>Can't Delete! First remove plays contains that player.</p>
+                        }
+                        else
+                        {
+                            <p>Are you sure to delete @Model.Name?</p>
+                        }
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <form asp-action="Delete" method="post" enctype="multipart/form-data" id="delete-form">
                             <input type="hidden" asp-for="Id" />
                             <input type="hidden" asp-for="Image" />
+                            @if (Model.Played.Count() == 0)
+                            {
                             <input type="submit" value="Delete" class="btn btn-danger" />
+                            }
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -48,69 +61,42 @@
     </div>
 </div>
 
+<br />
 
-
-
-
-
-
-
-
-
-
-
-@*<div class="row">
-        <div class="col-lg-6">
-            <h4>Checkout History</h4>
-            <table class="table table-bordered table-hover table-condensed">
+@if (Model.Played.Count() > 0)
+{
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped table-bordered">
                 <thead>
-                    <tr>
-                        <th>Date Loaned</th>
-                        <th>Date Returned</th>
-                        <th>Card Id</th>
-                    </tr>
+                <tr>
+                    <th>Image</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Players</th>
+                    <th>Winner</th>
+                </tr>
                 </thead>
-                <tbody>
-                    @foreach (var checkout in @Model.CheckoutHistory)
-                    {
-                        <tr>
-                            <td>
-                                @checkout.CheckOut
-                            </td>
-                            <td>
-                                @checkout.CheckIn
-                            </td>
-                            <td>
-                                @checkout.LibraryCard.Id
-                            </td>
-                        </tr>
-                    }
-                </tbody>
+
+                @foreach (var play in Model.Played)
+                {
+                    <tr>
+                        <td class="col-1"><img class="img-thumbnail player-played-image" src="@play.Boardgame.Image"/></td>
+                        <td class="col-2">@play.Date</td>
+                        <td class="col-5">@play.Description</td>
+
+                        <td class="col-2">
+                            @foreach (var player in play.Players)
+                            {
+                                <p>@player.Player.Name</p>
+                            }
+                        </td>
+                        <td class="col-1">??</td>
+                    </tr>
+
+                }
             </table>
         </div>
-        <div class="col-lg-6">
-            <h4>Current Holds</h4>
-            <table class="table table-bordered table-hover table-condensed">
-                <thead>
-                    <tr>
-                        <th>Hold Placed</th>
-                        <th>Patron</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var hold in @Model.CurrentHolds)
-                    {
-                        <tr>
-                            <td>
-                                @hold.HoldPlaced
-                            </td>
-                            <td>
-                                @hold.PatronName
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>*@
+    </div>
+}
 

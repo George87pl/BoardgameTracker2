@@ -33,6 +33,7 @@ namespace BoardgameTracker.Controllers
         public IActionResult Detail(int id)
         {
             var boardgame = _assets.GetById(id);
+            var played = _assets.isPlayed(id);
 
             var model = new AssetDetailModel()
             {
@@ -40,7 +41,8 @@ namespace BoardgameTracker.Controllers
                 Name = boardgame.Name,
                 Description = boardgame.Description,
                 Image = boardgame.Image,
-                Rating = boardgame.Rating
+                Rating = boardgame.Rating,
+                IsPlayed = played
             };
 
             return View(model);

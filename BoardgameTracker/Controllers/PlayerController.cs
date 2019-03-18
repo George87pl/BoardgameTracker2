@@ -4,6 +4,7 @@ using BoardgameTracker.Models.Player;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using System.Linq;
 using BoardgameData.Models;
 
 namespace BoardgameTracker.Controllers
@@ -11,11 +12,13 @@ namespace BoardgameTracker.Controllers
     public class PlayerController : Controller
     {
         private readonly IPlayer _assets;
+        private readonly IPlayed _played;
         private readonly IHostingEnvironment _env;
 
-        public PlayerController(IPlayer assets, IHostingEnvironment env)
+        public PlayerController(IPlayer assets, IPlayed played, IHostingEnvironment env)
         {
             _assets = assets;
+            _played = played;
             _env = env;
         }
 
@@ -33,13 +36,15 @@ namespace BoardgameTracker.Controllers
         public IActionResult Detail(int id)
         {
             var player = _assets.GetById(id);
+            var plays = _assets.GetAllPlaysWhereIdPlayer(id);
 
             var model = new AssetPlayerDetail()
             {
                 Id = player.Id,
                 Description = player.Description,
                 Image = player.Image,
-                Name = player.Name
+                Name = player.Name,
+                Played = plays
             };
 
             return View(model);
@@ -146,7 +151,21 @@ namespace BoardgameTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id, string Image)
         {
+            var plays = _played.GetAll();
             var player = _assets.GetById(id);
+
+            foreach (var playItem in plays)
+            {
+                foreach (var playerItem in playItem.Players)
+                {
+                    if (playerItem.Player.Id == id)
+                    {
+                        ModelState.AddModelError("Id", "Cant delete");
+                        return RedirectToAction(nameof(Detail), new { player.Id });
+                    }
+                }
+            }
+
             _assets.Delete(player);
 
             //Usuwanie pliku

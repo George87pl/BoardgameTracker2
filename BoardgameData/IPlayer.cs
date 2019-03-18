@@ -7,8 +7,9 @@ namespace BoardgameData
     {
         IEnumerable<Player> GetAll();
         Player GetById(int id);
-        void Add(Player boardgame);
-        void Delete(Player boardgame);
-        void Update(Player boardgame);
+        IEnumerable<Played> GetAllPlaysWhereIdPlayer(int id);
+        void Add(Player player);
+        void Delete(Player player);
+        void Update(Player player);
     }
 }

@@ -39,9 +39,11 @@
                             }
                         </td>
                         <td>
-                            <p><a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-info">Details</a></p>
-                            <p><a asp-action="Edit" class="btn btn-warning">Edit</a></p>
-                            <p><a asp-action="Delete" class="btn btn-danger">Delete</a></p>
+                            <div class="btn-group-vertical">
+                                <p><a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-info">Details</a></p>
+                                <p><a asp-action="Edit" class="btn btn-warning">Edit</a></p>
+                                <p><a asp-action="Delete" class="btn btn-danger">Delete</a></p>
+                            </div>
                         </td>
                     </tr>
                 }
