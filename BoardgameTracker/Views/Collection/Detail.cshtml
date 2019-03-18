@@ -33,13 +33,13 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        @if (Model.IsPlayed != null)
+                        @if (Model.IsPlayed == 0)
                         {
-                            <p>Are you sure to delete @Model.Name</p>
+                            <p>Are you sure to delete @Model.Name?</p>
                         }
                         else
                         {
-                            <p>Cant</p>
+                            <p>Can't do that. There are saved games in this Boardgame</p>
                         }
                     </div>
                     <div class="modal-footer">
@@ -47,7 +47,10 @@
                         <form asp-action="Delete" method="post" enctype="multipart/form-data" id="delete-form">
                             <input type="hidden" asp-for="Id" />
                             <input type="hidden" asp-for="Image" />
-                            <input type="submit" value="Delete" class="btn btn-danger" />
+                            @if (Model.IsPlayed == 0)
+                            {
+                                <input type="submit" value="Delete" class="btn btn-danger" />
+                            }
                         </form>
                     </div>
                 </div>

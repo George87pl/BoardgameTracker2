@@ -191,22 +191,14 @@ namespace BoardgameTracker.Controllers
         //    return View(boardgameModel);
         //}
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Delete(int id, string Image)
-        //{
-        //    var boardgame = _assets.GetById(id);
-        //    _assets.Delete(boardgame);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            var played = _assets.GetById(id);
+            _assets.Delete(played);
 
-        //    //Usuwanie pliku
-        //    if (Image != null)
-        //    {
-        //        var webRoot = _env.WebRootPath;
-        //        var filePath = Path.Combine(webRoot.ToString() + Image);
-        //        System.IO.File.Delete(filePath);
-        //    }
-
-        //    return RedirectToAction(nameof(Index));
-        //}
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
