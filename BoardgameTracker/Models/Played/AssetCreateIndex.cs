@@ -16,9 +16,16 @@ namespace BoardgameTracker.Models.Played
 
         public int BoardgameId { get; set; }
 
+        public Boardgame Boardgame { get; set; }
+
         [Required(ErrorMessage = "Player is required")]
         public int[] PlayerIds { get; set; }
 
+        public IEnumerable<PlayerPlayed> PlayerPlayeds { get; set; }
+
         public IEnumerable<IFormFile> imageUpload { get; set; }
+
+        public int Scores { get; set; }
+        public bool isWinner { get; set; }
     }
 }

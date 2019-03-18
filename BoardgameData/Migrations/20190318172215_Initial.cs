@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BoardgameData.Migrations
 {
-    public partial class hop : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -86,7 +86,9 @@ namespace BoardgameData.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     PlayerId = table.Column<int>(nullable: true),
-                    PlayedId = table.Column<int>(nullable: true)
+                    PlayedId = table.Column<int>(nullable: true),
+                    Score = table.Column<int>(nullable: false),
+                    isWinner = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardgameData.Migrations
 {
     [DbContext(typeof(BoardgameContext))]
-    [Migration("20190314121438_hop")]
-    partial class hop
+    [Migration("20190318172215_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -94,6 +94,10 @@ namespace BoardgameData.Migrations
                     b.Property<int?>("PlayedId");
 
                     b.Property<int?>("PlayerId");
+
+                    b.Property<int>("Score");
+
+                    b.Property<bool>("isWinner");
 
                     b.HasKey("Id");
 

@@ -93,6 +93,10 @@ namespace BoardgameData.Migrations
 
                     b.Property<int?>("PlayerId");
 
+                    b.Property<int>("Score");
+
+                    b.Property<bool>("isWinner");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PlayedId");

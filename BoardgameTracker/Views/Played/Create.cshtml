@@ -2,15 +2,21 @@
 
 <div class="col-md-8 offset-md-2">
     <div class="drop shadow">     
-        <form asp-action="Create" method="post" enctype="multipart/form-data" id="upload-form">
+        <form asp-action="CreateScores" method="post" enctype="multipart/form-data" id="upload-form">
             <div class="form-group">
                 <label class="text">Select Boardgame</label>
+                <input type="hidden" asp-for="Boardgame"/>
                 <select class="form-control" asp-for="@Model.BoardgameId" asp-items="@(new SelectList(Model.Boardgames, "Id", "Name"))"></select>
             </div>
             <div class="form-group">
                 <label class="text">Select Players</label>
                 <select multiple class="form-control" asp-for="@Model.PlayerIds" asp-items="@(new SelectList(Model.Players, "Id", "Name"))"></select>
                 <span asp-validation-for="@Model.PlayerIds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Descryption"></label>
+                <textarea asp-for="@Model.Descryption" rows="5" cols="50" class="form-control"></textarea>
+                <span asp-validation-for="@Model.Descryption" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="text">Select Photos</label>

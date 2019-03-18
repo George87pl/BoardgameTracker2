@@ -67,13 +67,29 @@ namespace BoardgameTracker.Controllers
             return View(model);
         }
 
+        public IActionResult CreateScores(AssetCreateIndex assetCreate)
+        {
+            List<PlayerPlayed> players = new List<PlayerPlayed>();
+
+            foreach (var playerId in assetCreate.PlayerIds)
+            {
+
+                players.Add(new PlayerPlayed
+                {
+                    Player = _assetPlayer.GetById(playerId)
+                });
+            }
+
+            assetCreate.PlayerPlayeds = players.AsEnumerable();
+            assetCreate.Boardgame = _assetBoardgame.GetById(assetCreate.BoardgameId);
+
+            return View(assetCreate);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(AssetCreateIndex assetCreate)
         {
-            assetCreate.Boardgames = _assets.GetAllBoardgames();
-            assetCreate.Players = _assets.GetAllPlayers();
-
             if (ModelState.IsValid)
             {
                 var webRoot = _env.WebRootPath;
@@ -101,24 +117,13 @@ namespace BoardgameTracker.Controllers
                     }
                 }
 
-                List<PlayerPlayed> players = new List<PlayerPlayed>();
-
-                foreach (var playerId in assetCreate.PlayerIds)
-                {
-
-                    players.Add(new PlayerPlayed
-                    {
-                        Player = _assetPlayer.GetById(playerId)
-                    });
-                }
-
                 var played = new Played()
                 {
                     Date = DateTime.Now,
                     Description = assetCreate.Descryption,
                     Boardgame = _assetBoardgame.GetById(assetCreate.BoardgameId),
                     Images = images,
-                    Players = players.AsEnumerable()
+                    Players = assetCreate.PlayerPlayeds
                 };
 
                 _assets.Add(played);
