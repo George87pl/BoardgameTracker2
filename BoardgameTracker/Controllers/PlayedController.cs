@@ -13,14 +13,12 @@ namespace BoardgameTracker.Controllers
     public class PlayedController : Controller
     {
         private readonly IPlayed _assets;
-        private readonly IPlayer _assetPlayer;
         private readonly IBoardgame _assetBoardgame;
         private readonly IHostingEnvironment _env;
 
-        public PlayedController(IPlayed assets, IPlayer assetPlayer, IHostingEnvironment env, IBoardgame assetBoardgame)
+        public PlayedController(IPlayed assets, IHostingEnvironment env, IBoardgame assetBoardgame)
         {
             _assets = assets;
-            _assetPlayer = assetPlayer;
             _assetBoardgame = assetBoardgame;
             _env = env;
         }
@@ -61,29 +59,9 @@ namespace BoardgameTracker.Controllers
             {
                 Boardgames = boardgames,
                 Players = players,
-                Descryption = ""
             };
 
             return View(model);
-        }
-
-        public IActionResult CreateScores(AssetCreateIndex assetCreate)
-        {
-            List<PlayerPlayed> players = new List<PlayerPlayed>();
-
-            foreach (var playerId in assetCreate.PlayerIds)
-            {
-
-                players.Add(new PlayerPlayed
-                {
-                    Player = _assetPlayer.GetById(playerId)
-                });
-            }
-
-            assetCreate.PlayerPlayeds = players.AsEnumerable();
-            assetCreate.Boardgame = _assetBoardgame.GetById(assetCreate.BoardgameId);
-
-            return View(assetCreate);
         }
 
         [HttpPost]
@@ -117,13 +95,24 @@ namespace BoardgameTracker.Controllers
                     }
                 }
 
+                List<PlayerPlayed> players = new List<PlayerPlayed>();
+
+                foreach (var playerId in assetCreate.PlayerIds)
+                {
+
+                    players.Add(new PlayerPlayed
+                    {
+                        Player = _assets.GetPlayerById(playerId)
+                    });
+                }
+
                 var played = new Played()
                 {
                     Date = DateTime.Now,
                     Description = assetCreate.Descryption,
                     Boardgame = _assetBoardgame.GetById(assetCreate.BoardgameId),
                     Images = images,
-                    Players = assetCreate.PlayerPlayeds
+                    Players = players.AsEnumerable()
                 };
 
                 _assets.Add(played);
@@ -133,68 +122,69 @@ namespace BoardgameTracker.Controllers
             return View(assetCreate);
         }
 
-        //public IActionResult Update(int id)
-        //{
-        //    var boardgame = _assets.GetById(id);
+        public IActionResult Update(int id)
+        {
+            var boardgames = _assets.GetAllBoardgames();
+            var played = _assets.GetById(id);
+            var model = new AssetPlayedUpdate()
+            {
+                Boardgames = boardgames,
+                Descryption = played.Description
+            };
 
-        //    var model = new CreateBoardgameModel()
-        //    {
-        //        Id = boardgame.Id,
-        //        Name = boardgame.Name,
-        //        Description = boardgame.Description,
-        //        Rating = boardgame.Rating,
-        //        Image = boardgame.Image
-        //    };
+            return View(model);
+        }
 
-        //    return View(model);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(AssetPlayedUpdate assetCreate)
+        {
+            if (ModelState.IsValid)
+            {
+                var webRoot = _env.WebRootPath;
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Update(UpdateBoardgameModel boardgameModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var boardgame = new Boardgame
-        //        {
-        //            Id = boardgameModel.Id,
-        //            Name = boardgameModel.Name,
-        //            Image = boardgameModel.Image,
-        //            Description = boardgameModel.Description,
-        //            Rating = boardgameModel.Rating
-        //        };
+                List<Image> images = new List<Image>();
 
-        //        if (boardgameModel.imageUpload != null)
-        //        {
-        //            if (boardgameModel.imageUpload.FileName.Length > 0)
-        //            {
-        //                var webRoot = _env.WebRootPath;
-        //                var filePath = Path.Combine(webRoot.ToString() + boardgame.Image);
+                if (assetCreate.imageUpload != null)
+                {
+                    foreach (var file in assetCreate.imageUpload)
+                    {
+                        var filePath = Path.Combine(webRoot.ToString() + "\\images\\plays\\" + file.FileName);
 
-        //                if (boardgame.Image != null)
-        //                {
-        //                    webRoot = _env.WebRootPath;
-        //                    System.IO.File.Delete(filePath);
-        //                }
+                        if (file.FileName.Length > 0)
+                        {
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                file.CopyTo(stream);
+                            }
 
-        //                filePath = Path.Combine(webRoot.ToString() + "\\images\\games\\" +
-        //                                        boardgameModel.imageUpload.FileName);
+                            images.Add(new Image
+                            {
+                                Url = "\\images\\plays\\" + file.FileName
+                            });
+                        }
+                    }
+                }
 
-        //                using (var stream = new FileStream(filePath, FileMode.Create))
-        //                {
-        //                    boardgameModel.imageUpload.CopyTo(stream);
-        //                }
-        //                boardgame.Image = "\\images\\games\\" + boardgameModel.imageUpload.FileName;
-        //            }
-        //        }
+                var played = new Played()
+                {
+                    Id = assetCreate.Id,
+                    Date = DateTime.Now,
+                    Description = assetCreate.Descryption,
+                    Boardgame = _assetBoardgame.GetById(assetCreate.BoardgameId)
+                };
 
-        //        _assets.Update(boardgame);
+                if (images.Count > 0)
+                {
+                    played.Images = images;
+                }
 
-        //        return RedirectToAction("Detail", new { id = boardgameModel.Id });
-        //    }
+                _assets.Update(played);
+                return RedirectToAction("Detail", new { Id = played.Id });
+            }
 
-        //    return View(boardgameModel);
-        //}
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -1,4 +1,6 @@
-﻿namespace BoardgameTracker.Models.Colection
+﻿using System.Collections.Generic;
+
+namespace BoardgameTracker.Models.Colection
 {
     public class AssetDetailModel
     {
@@ -8,5 +10,7 @@
         public string Image { get; set; }
         public int Rating { get; set; }
         public int IsPlayed { get; set; }
+
+        public IEnumerable<BoardgameData.Models.Played> Played { get; set; }
     }
 }

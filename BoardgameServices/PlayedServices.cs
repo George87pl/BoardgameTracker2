@@ -29,6 +29,15 @@ namespace BoardgameServices
             return _dbContext.Players;
         }
 
+        public Player GetPlayerById(int id)
+        {
+            return _dbContext.Players
+                .Include(p => p.Plays)
+                .ThenInclude(pl => pl.Played)
+                .ThenInclude(b => b.Boardgame)
+                .FirstOrDefault(b => b.Id == id);
+        }
+
         public IEnumerable<Played> GetAll()
         {
             return _dbContext.Plays

@@ -25,9 +25,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\plays\" />
-  </ItemGroup>
-
 </Project>

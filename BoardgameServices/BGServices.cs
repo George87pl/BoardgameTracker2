@@ -2,6 +2,7 @@
 using System.Linq;
 using BoardgameData;
 using BoardgameData.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardgameServices
 {
@@ -45,6 +46,15 @@ namespace BoardgameServices
         {
             _dbContext.Update(boardgame);
             _dbContext.SaveChanges();
+        }
+
+        public IEnumerable<Played> GetAllPlaysWhereIdBoardgame(int id)
+        {
+            return _dbContext.Plays
+                .Include(p => p.Players)
+                .ThenInclude(pl => pl.Player)
+                .Include(b => b.Boardgame)
+                .Where(bg => bg.Boardgame.Id == id);
         }
     }
 }

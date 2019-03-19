@@ -22,8 +22,6 @@
                 <tr>
                     <th>Image</th>
                     <th>Name</th>
-                    <th>Score</th>
-                    <th>Winner</th>
                 </tr>
             </thead>
             @foreach (var player in Model.Players)
@@ -31,8 +29,6 @@
                 <tr class="text-center">
                     <td class="col-2 text-center"><img class="img-thumbnail player-played-image" src="@player.Player.Image" /></td>
                     <td>@player.Player.Name</td>
-                    <td>??</td>
-                    <td>??</td>
                 </tr>
 
             }
@@ -57,8 +53,8 @@
 <div class="row">
     <div class="col-12">
         <a asp-controller="Played" asp-action="Index" class="btn btn-primary float-left">Back</a>
-        <a asp-controller="Player" asp-action="Delete" class="btn btn-danger float-right" data-toggle="modal" data-target="#exampleModal">Delete</a>
-        <a asp-controller="Player" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-info float-right" id="btn-pading">Edit</a>
+        <a asp-controller="Played" asp-action="Delete" class="btn btn-danger float-right" data-toggle="modal" data-target="#exampleModal">Delete</a>
+        <a asp-controller="Played" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-info float-right" id="btn-pading">Edit</a>
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -71,15 +67,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Are you sure to delete @Model.Boardgame.Name
+                        <p>Are you sure to delete?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <form asp-action="Delete" method="post" enctype="multipart/form-data" id="delete-form">
-                            <input type="hidden" asp-for="Id" />
-                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" name="Id" asp-for="@Model.Id" />
                             <input type="submit" value="Delete" class="btn btn-danger" />
                         </form>
+
                     </div>
                 </div>
             </div>

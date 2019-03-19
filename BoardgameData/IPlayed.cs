@@ -6,6 +6,7 @@ namespace BoardgameData.Models
     {
         IEnumerable<Boardgame> GetAllBoardgames();
         IEnumerable<Player> GetAllPlayers();
+        Player GetPlayerById(int id);
         IEnumerable<Played> GetAll();
         Played GetById(int id);
         void Add(Played boardgame);

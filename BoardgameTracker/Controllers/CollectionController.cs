@@ -11,11 +11,13 @@ namespace BoardgameTracker.Controllers
     public class CollectionController : Controller
     {
         private readonly IBoardgame _assets;
+        private readonly IPlayer _assetPlayers;
         private readonly IHostingEnvironment _env;
 
-        public CollectionController(IBoardgame assets, IHostingEnvironment env)
+        public CollectionController(IBoardgame assets, IHostingEnvironment env, IPlayer assetPlayers)
         {
             _assets = assets;
+            _assetPlayers = assetPlayers;
             _env = env;
         }
 
@@ -23,8 +25,7 @@ namespace BoardgameTracker.Controllers
         {
             var model = new AssetIndexListingModel
             {
-                Boardgames = _assets.GetAll()
-
+                Boardgames = _assets.GetAll() 
             };
 
             return View(model);
@@ -34,6 +35,7 @@ namespace BoardgameTracker.Controllers
         {
             var boardgame = _assets.GetById(id);
             var played = _assets.isPlayed(id);
+            var plays = _assets.GetAllPlaysWhereIdBoardgame(id);
 
             var model = new AssetDetailModel()
             {
@@ -42,7 +44,8 @@ namespace BoardgameTracker.Controllers
                 Description = boardgame.Description,
                 Image = boardgame.Image,
                 Rating = boardgame.Rating,
-                IsPlayed = played
+                IsPlayed = played,
+                Played = plays
             };
 
             return View(model);
