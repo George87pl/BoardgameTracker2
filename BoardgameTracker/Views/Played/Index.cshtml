@@ -42,10 +42,10 @@
                             <div class="btn-group-vertical">
                                 <p><a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-info">Details</a></p>
                                 <p><a asp-action="Update" asp-route-id="@item.Id" class="btn btn-warning">Edit</a></p>
-                                <p><a asp-controller="Player" asp-action="Delete" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Delete</a></p>
+                                <p><a asp-controller="Played" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal_@item.Id">Delete</a></p>
                             </div>
                             <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="exampleModal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
