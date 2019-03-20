@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BoardgameData.Models;
+using System;
 
 namespace BoardgameTracker
 {
@@ -38,9 +39,18 @@ namespace BoardgameTracker
             services.AddScoped<IPlayed, PlayedServices>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddEntityFrameworkSqlite()
-                .AddDbContext<BoardgameContext>(
-                    options => { options.UseSqlite($"Data Source={_appHost.ContentRootPath}/Boardgame.db"); });
+
+            // Use SQL Database if in Azure, otherwise, use SQLite
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+                services.AddDbContext<BoardgameContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MyDbConnection")));
+            else
+                services.AddDbContext<BoardgameContext>(options =>
+                    options.UseSqlite($"Data Source={_appHost.ContentRootPath}/Boardgame.db"));
+
+
+        // Automatically perform database migration
+            services.BuildServiceProvider().GetService<BoardgameContext>().Database.Migrate();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +75,7 @@ namespace BoardgameTracker
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Collection}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
